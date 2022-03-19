@@ -1,4 +1,3 @@
-from itertools import count
 from possiblewords import *
 import string
 
@@ -17,7 +16,7 @@ def increment_all(rankings, word):
         letter = word[i]
         rankings[ word[:i].count(letter) ][letter] += 1
 
-def get_rankings(popular_5_letter):
+def get_rankings(words_5_letter):
     letters = string.ascii_letters[:26]
     rankings1 = []
     rankings2 = []
@@ -35,7 +34,7 @@ def get_rankings(popular_5_letter):
 
     # return [rankings1, rankings2] #---------------
 
-    for word in popular_5_letter:
+    for word in words_5_letter:
         increment_all(rankings1, word)
         for i in range(WORD_LENGTH):
             rankings2[i][word[i]] += 1
@@ -99,17 +98,17 @@ def update_requirements(word, ans, requirements):
             requirements[3] += combo
 
 
-def special_round(ans, round, popular_possible_words, requirements, all_words):
+def special_round(ans, round, possible_words, requirements, all_words):
     print("{} - Special Round".format(round))
-    popular_possible_words = get_possible_words(popular_possible_words, requirements)
+    possible_words = get_possible_words(possible_words, requirements)
     i = ans.index("0")
     print(i)
-    print(popular_possible_words)
+    print(possible_words)
     possible_letters = ""
-    for w in popular_possible_words:
+    for w in possible_words:
         possible_letters += w[i]
     print(possible_letters)
-    best_word = popular_possible_words[0]
+    best_word = possible_words[0]
     best_score = 1
     for w in all_words:
         score = 0
@@ -117,32 +116,32 @@ def special_round(ans, round, popular_possible_words, requirements, all_words):
             if l in w:
                 score += 1
         if score >= best_score:
-            print(best_word)
+            # print(best_word)
             best_score = score
             best_word = w
     print(best_word)
 
-def play_special_round(word, ans):
-    with open("5-letter-words.txt", "r") as f:
-        words_5_letter = f.read().split()
+def play_special_round_only(word, ans):
+    # with open("5-letter-words.txt", "r") as f:
+    #     words_5_letter = f.read().split()
 
     with open("5-letter-popular.txt", "r") as f:
-        popular_5_letter = f.read().split()
+        words_5_letter = f.read().split()
 
     requirements = ["", "", "", ""]
     update_requirements(word, ans, requirements)
 
-    popular_possible_words = get_possible_words(popular_5_letter, requirements)
-    all_possible_words = get_possible_words(words_5_letter, requirements)
+    possible_words = get_possible_words(words_5_letter, requirements)
 
-    special_round(ans, 0, popular_possible_words, requirements, popular_5_letter)
+    special_round(ans, 0, possible_words, requirements, words_5_letter)
 
-def play_round(rankings, all_possible_words, popular_possible_words, requirements, round, all_words) -> bool:
+def check_answer():
+    pass
+
+def play_round(rankings, possible_words, requirements, round, all_words) -> bool:
     print(round)
     
-    best_word = get_best_word(rankings, popular_possible_words)
-    if best_word == "":
-        best_word = get_best_word(rankings, all_possible_words)
+    best_word = get_best_word(rankings, possible_words)
 
     print(best_word)
     ans = input()
@@ -150,11 +149,11 @@ def play_round(rankings, all_possible_words, popular_possible_words, requirement
         print("You won :D")
         return True
 
-    if ans.count("2") == WORD_LENGTH - 1 and len(popular_possible_words) > 2:
+    if ans.count("2") == WORD_LENGTH - 1 and len(possible_words) > 2:
         update_requirements(best_word, ans, requirements)
         print("updated requirements:", requirements)
-        popular_possible_words = get_possible_words(popular_possible_words, requirements)
-        special_round(ans, round, popular_possible_words, requirements, all_words)
+        possible_words = get_possible_words(possible_words, requirements)
+        special_round(ans, round, possible_words, requirements, all_words)
 
     update_requirements(best_word, ans, requirements)
     print("updated requirements:", requirements)
@@ -163,37 +162,24 @@ def play_round(rankings, all_possible_words, popular_possible_words, requirement
 
 def play():
 
-    with open("5-letter-words.txt", "r") as f:
-        words_5_letter = f.read().split()
+    # with open("5-letter-words.txt", "r") as f:
+    #     words_5_letter = f.read().split()
 
     with open("5-letter-popular.txt", "r") as f:
-        popular_5_letter = f.read().split()
+        words_5_letter = f.read().split()
 
-    rankings = get_rankings(popular_5_letter)
+    rankings = get_rankings(words_5_letter)
     requirements = ["", "", "", ""]
     
-    popular_possible_words = get_possible_words(popular_5_letter, requirements)
-    all_possible_words = get_possible_words(words_5_letter, requirements)
+    possible_words = get_possible_words(words_5_letter, requirements)
 
     round = Round()
 
-    while not play_round(rankings, all_possible_words, popular_possible_words, requirements, round, words_5_letter):
-        popular_possible_words = get_possible_words(popular_possible_words, requirements)
-        all_possible_words = get_possible_words(all_possible_words, requirements)
-        rankings = get_rankings(popular_possible_words)
-        print(popular_possible_words)
+    while not play_round(rankings, possible_words, requirements, round, words_5_letter):
+        possible_words = get_possible_words(possible_words, requirements)
+        rankings = get_rankings(possible_words)
+        print(possible_words)
 
 
 
-# play()
-
-# with open("5-letter-popular.txt", "r") as f:
-#     popular_5_letter = f.read().split()
-
-# requirements = ["", "", "", ""]
-# popular_possible_words = get_possible_words(popular_5_letter, requirements)
-
-# rankings = get_rankings(popular_5_letter)
-# print(get_worst_word(rankings, popular_possible_words))
-
-# play_special_round("batch", "02222")
+play()
