@@ -119,7 +119,9 @@ def special_round(ans, round, possible_words, requirements, all_words):
             # print(best_word)
             best_score = score
             best_word = w
+
     print(best_word)
+    return check_answer(best_word, requirements, possible_words, all_words)
 
 def play_special_round_only(word, ans):
     # with open("5-letter-words.txt", "r") as f:
@@ -135,29 +137,30 @@ def play_special_round_only(word, ans):
 
     special_round(ans, 0, possible_words, requirements, words_5_letter)
 
-def check_answer():
-    pass
+def check_answer(best_word, requirements, possible_words, all_words):
+
+    print(best_word)
+
+    ans = input()
+    if ans == "22222": 
+        print("You won :D")
+        return True
+
+    update_requirements(best_word, ans, requirements)
+    print("updated requirements:", requirements)
+
+    if ans.count("2") == WORD_LENGTH - 1 and len(possible_words) > 2:
+        possible_words = get_possible_words(possible_words, requirements)
+        return special_round(ans, round, possible_words, requirements, all_words)
+
+    return False
 
 def play_round(rankings, possible_words, requirements, round, all_words) -> bool:
     print(round)
     
     best_word = get_best_word(rankings, possible_words)
 
-    print(best_word)
-    ans = input()
-    if ans == "22222": 
-        print("You won :D")
-        return True
-
-    if ans.count("2") == WORD_LENGTH - 1 and len(possible_words) > 2:
-        update_requirements(best_word, ans, requirements)
-        print("updated requirements:", requirements)
-        possible_words = get_possible_words(possible_words, requirements)
-        special_round(ans, round, possible_words, requirements, all_words)
-
-    update_requirements(best_word, ans, requirements)
-    print("updated requirements:", requirements)
-    return False
+    return check_answer(best_word, requirements, possible_words, all_words)
 
 
 def play():
@@ -181,5 +184,5 @@ def play():
         print(possible_words)
 
 
-
-play()
+while True:
+    play()
