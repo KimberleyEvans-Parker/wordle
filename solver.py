@@ -3,6 +3,8 @@ from requirements import Requirements
 import string
 
 WORD_LENGTH = 5
+FILENAME = "5-letter-popular.txt"
+FILENAME = "5-letter-words.txt"
 
 
 class Round:
@@ -67,16 +69,16 @@ def get_best_word(rankings, possible_words):
 
 
 def get_worst_word(rankings, possible_words):
-    best_word = []
-    best_ranking = 100000000
+    worst_word = []
+    worst_ranking = 100000000
     for word in possible_words:
         ranking = get_ranking(rankings, word)
-        if ranking < best_ranking:
-            best_ranking = ranking
-            best_word = [word]
-        elif ranking == best_ranking:
-            best_word.append(word)
-    return best_word
+        if ranking < worst_ranking:
+            worst_ranking = ranking
+            worst_word = [word]
+        elif ranking == worst_ranking:
+            worst_word.append(word)
+    return worst_word
 
 
 def special_round(ans, round, possible_words, requirements, all_words):
@@ -106,10 +108,8 @@ def special_round(ans, round, possible_words, requirements, all_words):
 
 
 def play_special_round_only(word, ans):
-    # with open("5-letter-words.txt", "r") as f:
-    #     words_5_letter = f.read().split()
-
-    with open("5-letter-popular.txt", "r") as f:
+    
+    with open(FILENAME, "r") as f:
         words_5_letter = f.read().split()
 
     requirements = Requirements()
@@ -149,10 +149,7 @@ def play_round(rankings, possible_words, requirements, round, all_words) -> bool
 
 def play():
 
-    # with open("5-letter-words.txt", "r") as f:
-    #     words_5_letter = f.read().split()
-
-    with open("5-letter-popular.txt", "r") as f:
+    with open(FILENAME, "r") as f:
         words_5_letter = f.read().split()
 
     rankings = get_rankings(words_5_letter)
