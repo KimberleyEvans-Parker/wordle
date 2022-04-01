@@ -1,6 +1,6 @@
 from possiblewords import *
 from requirements import Requirements
-import string
+from rankings import Rankings
 
 WORD_LENGTH = 5
 FILENAME = "5-letter-popular.txt"
@@ -14,71 +14,6 @@ class Round:
     def __repr__(self) -> str:
         self.number += 1
         return "ROUND" + str(self.number)
-
-
-def increment_all(rankings, word):
-    for i in range(WORD_LENGTH):
-        letter = word[i]
-        rankings[word[:i].count(letter)][letter] += 1
-
-
-def get_rankings(words_5_letter):
-    letters = string.ascii_letters[:26]
-    rankings1 = []
-    rankings2 = []
-    for _ in range(WORD_LENGTH):
-        rankings1.append({})
-        rankings2.append({})
-
-    for dictionary in rankings1:
-        for letter in letters:
-            dictionary[letter] = 0
-
-    for dictionary in rankings2:
-        for letter in letters:
-            dictionary[letter] = 0
-
-    # return [rankings1, rankings2] #---------------
-
-    for word in words_5_letter:
-        increment_all(rankings1, word)
-        for i in range(WORD_LENGTH):
-            rankings2[i][word[i]] += 1
-
-    return [rankings1, rankings2]
-
-
-def get_ranking(rankings, word):
-    ranking = 0
-    for i in range(len(word)):
-        letter = word[i]
-        ranking += rankings[1][i][letter]
-        ranking += rankings[0][word[:i].count(letter)][letter]
-    return ranking
-
-
-def get_best_word(rankings, possible_words):
-    best_word = ""
-    best_ranking = 0
-    for word in possible_words:
-        ranking = get_ranking(rankings, word)
-        if ranking > best_ranking:
-            best_ranking = ranking
-            best_word = word
-    return best_word
-
-
-def get_worst_word(rankings, possible_words):
-    worst_word = []
-    worst_ranking = 100000000
-    for word in possible_words:
-        ranking = get_ranking(rankings, word)
-        if ranking < worst_ranking:
-            worst_ranking = ranking
-            worst_word = [word]
-        elif ranking == worst_ranking:
-            worst_word.append(word)
-    return worst_word
 
 
 def special_round(ans, round, possible_words, requirements, all_words):
@@ -140,9 +75,10 @@ def check_answer(best_word, requirements, possible_words, all_words):
 
 
 def play_round(rankings, possible_words, requirements, round, all_words) -> bool:
+    
     print(round)
 
-    best_word = get_best_word(rankings, possible_words)
+    best_word = rankings.get_best_word(possible_words)
 
     return check_answer(best_word, requirements, possible_words, all_words)
 
@@ -152,7 +88,7 @@ def play():
     with open(FILENAME, "r") as f:
         words_5_letter = f.read().split()
 
-    rankings = get_rankings(words_5_letter)
+    rankings = Rankings(words_5_letter)
     requirements = Requirements()
 
     possible_words = get_possible_words(words_5_letter, requirements)
@@ -161,7 +97,7 @@ def play():
 
     while not play_round(rankings, possible_words, requirements, round, words_5_letter):
         possible_words = get_possible_words(possible_words, requirements)
-        rankings = get_rankings(possible_words)
+        rankings.update_rankings(possible_words)
         print(possible_words)
 
 
