@@ -4,7 +4,7 @@ from rankings import Rankings
 
 WORD_LENGTH = 5
 FILENAME = "5-letter-popular.txt"
-FILENAME = "5-letter-words.txt"
+# FILENAME = "5-letter-words.txt"
 
 
 class Round:
@@ -75,7 +75,7 @@ def check_answer(best_word, requirements, possible_words, all_words):
 
 
 def play_round(rankings, possible_words, requirements, round, all_words) -> bool:
-    
+
     print(round)
 
     best_word = rankings.get_best_word(possible_words)

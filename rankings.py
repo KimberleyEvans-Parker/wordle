@@ -9,7 +9,6 @@ class Rankings:
         self.update_rankings(words)
     
     def increment_all(self, word):
-        print(word)
         for i in range(WORD_LENGTH):
             letter = word[i]
             self.rankings1[word[:i].count(letter)][letter] += 1

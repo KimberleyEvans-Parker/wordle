@@ -112,7 +112,6 @@ abyes
 abyla
 abysm
 abyss
-ac/dc
 acale
 acana
 acapu
@@ -1442,7 +1441,6 @@ asyla
 asyle
 async
 asyut
-at/wb
 atacc
 atake
 atame
@@ -4969,7 +4967,6 @@ dayna
 dazed
 dazes
 dazey
-dbm/m
 dbrad
 dcpsk
 ddcmp
@@ -10956,7 +10953,6 @@ kytes
 kythe
 kyung
 kyzyl
-l/cpl
 laang
 laban
 labaw
@@ -11624,7 +11620,6 @@ llama
 llano
 lloyd
 lludd
-lm/ft
 loach
 loads
 loafs
@@ -13230,7 +13225,6 @@ mysid
 mysis
 myths
 myton
-n/s/f
 naacp
 naafi
 naara
